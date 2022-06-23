@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(
-    MaterialApp(
+    const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MyApp(),
     ),
@@ -10,12 +11,12 @@ void main() {
 }
 
 List<bool> isSelected = [true, false, false, false, false];
-List<NavElement> navElements = [
-  NavElement(),
-  NavElement(),
-  NavElement(),
-  NavElement(),
-  NavElement(),
+List<String> navElements = [
+  'NavElement()',
+  'NavElement()1',
+  'NavElement()2',
+  'NavElement()3',
+  'NavElement()4',
 ];
 List<String> texts = [
   'Dashboard',
@@ -33,7 +34,7 @@ List<IconData> icons = [
 ];
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -42,10 +43,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   void select(int n) {
     for (int i = 0; i < 5; i++) {
-      if (i == n)
+      if (i == n) {
         isSelected[i] = true;
-      else
+      } else {
         isSelected[i] = false;
+      }
     }
   }
 
@@ -54,32 +56,29 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       body: Container(
         color: const Color(0xFFDFE3EC),
-        child: Center(
-          child: Container(
-            height: 310.0,
-            width: 200.0,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: navElements
-                  .map(
-                    (e) => NavElement(
-                      index: navElements.indexOf(e),
-                      text: texts[navElements.indexOf(e)],
-                      icon: icons[navElements.indexOf(e)],
-                      active: isSelected[navElements.indexOf(e)],
-                      onTap: () {
-                        setState(() {
-                          select(navElements.indexOf(e));
-                        });
-                      },
-                    ),
-                  )
-                  .toList(),
-            ),
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: 200.0,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: navElements
+                .map(
+                  (e) => NavElement(
+                    index: navElements.indexOf(e),
+                    text: texts[navElements.indexOf(e)],
+                    icon: icons[navElements.indexOf(e)],
+                    active: isSelected[navElements.indexOf(e)],
+                    onTap: () {
+                      setState(() {
+                        select(navElements.indexOf(e));
+                      });
+                    },
+                  ),
+                )
+                .toList(),
           ),
         ),
       ),
@@ -94,7 +93,12 @@ class NavElement extends StatefulWidget {
   final String text;
   final int index;
 
-  NavElement({this.onTap, this.active, this.icon, this.text, this.index});
+  NavElement(
+      {required this.onTap,
+      required this.active,
+      required this.icon,
+      required this.text,
+      required this.index});
 
   @override
   _NavElementState createState() => _NavElementState();
@@ -103,12 +107,12 @@ class NavElement extends StatefulWidget {
 Color conColor = Colors.white;
 
 class _NavElementState extends State<NavElement> with TickerProviderStateMixin {
-  AnimationController _tcc;
-  Animation<Color> _tca;
-  AnimationController _icc;
-  Animation<Color> _ica;
-  AnimationController _lsc;
-  Animation<double> _lsa;
+  late AnimationController _tcc;
+  late Animation<Color?> _tca;
+  late AnimationController _icc;
+  late Animation<Color?> _ica;
+  late AnimationController _lsc;
+  late Animation<double> _lsa;
   double width = 140.0;
   double opacity = 0.0;
 
@@ -192,7 +196,7 @@ class _NavElementState extends State<NavElement> with TickerProviderStateMixin {
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(15.0)),
           padding: EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
-          height: 60.0,
+          height: 80.0,
           width: 200.0,
           child: Row(
             children: [
@@ -226,7 +230,7 @@ class _NavElementState extends State<NavElement> with TickerProviderStateMixin {
                       opacity: opacity,
                       child: Text(
                         widget.text,
-                        style: TextStyle(
+                        style: GoogleFonts.overpass(
                           fontWeight: FontWeight.bold,
                           color: widget.active ? Colors.black : _tca.value,
                           letterSpacing: widget.active ? 2.0 : _lsa.value,
